@@ -83,9 +83,9 @@ export default async function DashboardPremium() {
       {/* HEADER */}
       <div>
         <h1 className="text-3xl font-semibold text-slate-100">
-          {en.dashboard.title}
+          {en.dashboard.overview.title}
         </h1>
-        <p className="text-slate-400 mt-1">{en.dashboard.subtitle}</p>
+        <p className="text-slate-400 mt-1">{en.dashboard.overview.subtitle}</p>
       </div>
 
       {/* 🟦 GLOBAL EMPTY STATE */}
