@@ -1,20 +1,25 @@
 "use client";
 
 import { useTransition } from "react";
-import { createProjectAction } from "../../server/actions";
+import { createProjectAction } from "@/app/dashboard/server/actions";
 
 export function NewProjectButton() {
   const [isPending, start] = useTransition();
 
+  function handleCreate() {
+    start(async () => {
+      await createProjectAction("Nytt projekt");
+    });
+  }
+
   return (
-    <form action={(formData) => start(() => createProjectAction(formData))}>
-      <input type="hidden" name="projectName" value="Nytt projekt" />
-      <button
-        disabled={isPending}
-        className="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-700"
-      >
-        + Nytt projekt
-      </button>
-    </form>
+    <button
+      type="button"
+      onClick={handleCreate}
+      disabled={isPending}
+      className="px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded text-sm"
+    >
+      {isPending ? "Skapar…" : "Nytt projekt"}
+    </button>
   );
 }
