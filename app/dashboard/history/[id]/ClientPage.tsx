@@ -28,10 +28,8 @@ export function HistoryDetailClient({
 
   const productData = {
     productName: item.title ?? "",
-    features: "",
+    details: "",
     tone: "",
-    audience: "",
-    language: "sv",
   };
 
   function openUpgrade(reason: "favorites" | "generation" | "projects") {
@@ -49,7 +47,6 @@ export function HistoryDetailClient({
           size="md"
           onUpgrade={openUpgrade}
         />
-
       </div>
 
       {/* OUTPUT (read-only, inga actions här) */}
