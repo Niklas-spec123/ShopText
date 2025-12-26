@@ -1,33 +1,30 @@
 "use client";
 
 import { useTransition } from "react";
-import { removeItemFromProject } from "../../server/actions";
+import { removeItemFromProject } from "@/app/dashboard/server/actions";
 
-export function RemoveFromProjectButton({
-  itemId,
-  projectId,
-}: {
-  itemId: string;
+type Props = {
   projectId: string;
-}) {
-  const [pending, startTransition] = useTransition();
+  itemId: string;
+};
+
+export function RemoveFromProjectButton({ projectId, itemId }: Props) {
+  const [isPending, start] = useTransition();
+
+  function handleRemove() {
+    start(async () => {
+      await removeItemFromProject(projectId, itemId);
+    });
+  }
 
   return (
-    <form
-      action={(formData) => {
-        startTransition(() => removeItemFromProject(formData));
-      }}
+    <button
+      type="button"
+      onClick={handleRemove}
+      disabled={isPending}
+      className="text-xs text-slate-400 hover:text-slate-300"
     >
-      <input type="hidden" name="itemId" value={itemId} />
-      <input type="hidden" name="projectId" value={projectId} />
-
-      <button
-        type="submit"
-        disabled={pending}
-        className="text-xs text-red-400 hover:text-red-300 px-2 py-1 rounded-lg border border-red-500/30"
-      >
-        {pending ? "Tar bort…" : "Ta bort"}
-      </button>
-    </form>
+      {isPending ? "Tar bort…" : "Ta bort"}
+    </button>
   );
 }
