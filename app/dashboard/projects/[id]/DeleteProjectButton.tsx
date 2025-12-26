@@ -19,7 +19,7 @@ export function DeleteProjectButton({ id }: { id: string }) {
       disabled={isPending}
       className="text-red-400 hover:text-red-300"
     >
-      {isPending ? "Tar bort…" : "Ta bort projekt"}
+      {isPending ? "Deleting…" : "Delete project"}
     </button>
   );
 }

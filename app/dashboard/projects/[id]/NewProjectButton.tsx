@@ -8,7 +8,7 @@ export function NewProjectButton() {
 
   function handleCreate() {
     start(async () => {
-      await createProjectAction("Nytt projekt");
+      await createProjectAction("New project");
     });
   }
 
@@ -19,7 +19,7 @@ export function NewProjectButton() {
       disabled={isPending}
       className="px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded text-sm"
     >
-      {isPending ? "Skapar…" : "Nytt projekt"}
+      {isPending ? "Creating…" : "New project"}
     </button>
   );
 }

@@ -24,7 +24,7 @@ export function RemoveFromProjectButton({ projectId, itemId }: Props) {
       disabled={isPending}
       className="text-xs text-slate-400 hover:text-slate-300"
     >
-      {isPending ? "Tar bort…" : "Ta bort"}
+      {isPending ? "Deleting…" : "Delete"}
     </button>
   );
 }
