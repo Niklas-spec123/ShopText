@@ -1,6 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { saveSettingsAction } from "./actions";
-import { ManageSubscriptionButton } from "./subscription-button";
+import { SubscriptionButton } from "./subscription-button";
 
 export default async function SettingsPage() {
   const supabase = createSupabaseServerClient();
@@ -23,6 +23,13 @@ export default async function SettingsPage() {
     .eq("id", session.user.id)
     .single();
 
+  if (!profile) {
+    return (
+      <div className="text-sm text-slate-400">
+        Could not load subscription data.
+      </div>
+    );
+  }
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       {/* HEADER */}
@@ -57,7 +64,7 @@ export default async function SettingsPage() {
           Manage your plan, payment method and invoices.
         </p>
 
-        <ManageSubscriptionButton />
+        <SubscriptionButton plan={profile.plan} />
       </div>
 
       {/* SETTINGS FORM */}
