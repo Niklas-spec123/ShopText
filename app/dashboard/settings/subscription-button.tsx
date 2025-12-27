@@ -1,18 +1,61 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export function ManageSubscriptionButton() {
-  const handleClick = async () => {
-    const res = await fetch("/api/stripe/portal", { method: "POST" });
-    const data = await res.json();
+type Props = {
+  plan: "free" | "pro";
+};
 
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Something went wrong");
+export function SubscriptionButton({ plan }: Props) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleManageSubscription = async () => {
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/stripe/portal", {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        // Försök läsa error från backend, annars fallback
+        const error = await res.json().catch(() => null);
+
+        alert(error?.error ?? "You don’t have an active subscription yet.");
+        return;
+      }
+
+      const { url } = await res.json();
+
+      if (!url) {
+        throw new Error("Missing portal URL");
+      }
+
+      window.location.href = url;
+    } catch (err) {
+      console.error("Manage subscription error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  return <Button onClick={handleClick}>Manage subscription</Button>;
+  const handleUpgrade = () => {
+    router.push("/pricing");
+  };
+
+  // ✅ PRO → Billing Portal
+  if (plan === "pro") {
+    return (
+      <Button onClick={handleManageSubscription} disabled={loading}>
+        {loading ? "Opening billing portal..." : "Manage subscription"}
+      </Button>
+    );
+  }
+
+  // ✅ FREE → Checkout / Pricing
+  return <Button onClick={handleUpgrade}>Upgrade to Pro</Button>;
 }
